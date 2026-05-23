@@ -64,9 +64,8 @@ export async function getPublicAudit(id: string): Promise<PublicAudit | null> {
 }
 
 // ── saveLead ───────────────────────────────────────────────────────────────
-// Abuse protection: honeypot field + IP-based rate limiting (10 min window)
+// Abuse protection: honeypot field + session-based dedup.
 // Honeypot: bots fill hidden fields, humans don't. Silent drop on honeypot hit.
-// Rate limit: max 3 submissions per IP per 10 minutes stored in rate_limits table.
 export async function saveLead(data: {
   email: string;
   companyName?: string;
@@ -104,8 +103,8 @@ export async function saveLead(data: {
 
 // ── sendConfirmationEmail ─────────────────────────────────────────────────
 // Sends a confirmation email via Resend with the user's savings summary.
-// NOTE: For production, move this call to a server endpoint to keep the
-// API key server-side. Resend supports browser calls for prototyping.
+// TODO: For production, move this call to a server endpoint to keep the
+// API key server-side. Resend API calls fail in the browser due to CORS.
 export async function sendConfirmationEmail(data: {
   email: string;
   firstName?: string;
@@ -117,15 +116,13 @@ export async function sendConfirmationEmail(data: {
   auditId: string;
 }): Promise<void> {
   const apiKey = import.meta.env.VITE_RESEND_API_KEY as string | undefined;
-  if (!apiKey) return; // Silently skip if not configured
+  if (!apiKey) return;
 
   const siteOrigin =
     typeof window !== "undefined" ? window.location.origin : "https://spendsense.ai";
   const auditUrl = `${siteOrigin}/audit/${data.auditId}`;
-
   const greeting = data.firstName ? `Hi ${data.firstName},` : "Hi there,";
 
-  // Build recommendations rows (overspending + optimize only)
   const actionableRecs = data.recommendations.filter((r) => r.potentialSaving > 0);
   const recRows = actionableRecs
     .map(

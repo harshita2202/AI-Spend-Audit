@@ -16,9 +16,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Landing} />
       <Route path="/audit" component={AuditForm} />
-      {/* /results/:id — real audit results fetched from Supabase */}
       <Route path="/results/:id" component={AuditResults} />
-      {/* /results — legacy mock route (dev fallback) */}
       <Route path="/results" component={AuditResults} />
       <Route path="/audit/:id" component={SharedAudit} />
       <Route component={NotFound} />
