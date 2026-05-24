@@ -32,7 +32,6 @@ export default function Landing() {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* ── Hero ── */}
       <section className="hero-gradient pt-20 pb-16 px-5">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -40,7 +39,7 @@ export default function Landing() {
               <div className="inline-flex items-center gap-2 bg-primary-light text-primary rounded-sm px-3 py-1 text-xs font-bold mb-5 border border-primary/20 uppercase tracking-widest font-mono-app">
                 🎁 Free for founders
               </div>
-              <h1 className="text-5xl sm:text-6xl font-black text-foreground leading-tight tracking-tight mb-5 font-display">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-foreground leading-tight tracking-tight mb-5 font-display">
                 Are you <span className="text-primary">overpaying</span> for AI tools?
               </h1>
               <p className="text-lg text-muted-fg leading-relaxed mb-7 max-w-md">
@@ -63,7 +62,6 @@ export default function Landing() {
               </div>
             </div>
 
-            {/* Preview card */}
             <div className="relative">
               <div
                 className="absolute inset-0 rounded-sm"
@@ -93,27 +91,17 @@ export default function Landing() {
                       className="flex items-center justify-between px-4 py-3"
                       style={{
                         borderLeft: `3px solid ${
-                          row.status === "over"
-                            ? "#ef4444"
-                            : row.status === "opt"
-                            ? "#f59e0b"
-                            : "#22c55e"
+                          row.status === "over" ? "#ef4444" : row.status === "opt" ? "#f59e0b" : "#22c55e"
                         }`,
                       }}
                     >
                       <div className="flex items-center gap-3">
-                        <span className="text-sm font-semibold text-foreground font-display">
-                          {row.name}
-                        </span>
+                        <span className="text-sm font-semibold text-foreground font-display">{row.name}</span>
                         <span className="text-xs text-muted-fg">{row.spend}</span>
                       </div>
                       <span
                         className={`text-sm font-bold font-display ${
-                          row.status === "over"
-                            ? "text-red-600"
-                            : row.status === "opt"
-                            ? "text-amber-600"
-                            : "text-green-600"
+                          row.status === "over" ? "text-red-600" : row.status === "opt" ? "text-amber-600" : "text-green-600"
                         }`}
                       >
                         {row.saving}
@@ -127,14 +115,11 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── Stats bar ── */}
       <section className="border-y border-border bg-background py-8 px-5">
         <div className="max-w-4xl mx-auto grid grid-cols-3 gap-4 sm:gap-8">
           {STATS.map((s) => (
             <div key={s.label} className="text-center">
-              <div className="text-3xl sm:text-4xl font-black text-primary font-display">
-                {s.value}
-              </div>
+              <div className="text-3xl sm:text-4xl font-black text-primary font-display">{s.value}</div>
               <div className="text-xs text-muted-fg mt-1">{s.label}</div>
               <div className="text-xs text-muted-fg/50 mt-0.5">illustrative</div>
             </div>
@@ -142,13 +127,10 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── How it works ── */}
       <section className="py-20 px-5 bg-background">
         <div className="max-w-5xl mx-auto">
           <div className="mb-12">
-            <p className="text-xs font-bold uppercase tracking-widest text-primary mb-2 font-mono-app">
-              How it works
-            </p>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary mb-2 font-mono-app">How it works</p>
             <h2 className="text-3xl sm:text-4xl font-black text-foreground font-display">
               Three steps. Under two minutes.
             </h2>
@@ -160,10 +142,7 @@ export default function Landing() {
                   <div className="w-9 h-9 rounded-sm bg-primary-light flex items-center justify-center text-primary text-lg">
                     {s.step === "01" ? "⚡" : s.step === "02" ? "📊" : "✅"}
                   </div>
-                  <span
-                    className="text-4xl font-black select-none font-display"
-                    style={{ color: "#e0ddf5" }}
-                  >
+                  <span className="text-4xl font-black select-none font-display" style={{ color: "#e0ddf5" }}>
                     {s.step}
                   </span>
                 </div>
@@ -175,7 +154,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── Final CTA ── */}
       <section
         className="py-20 px-5 border-t border-border"
         style={{ background: "linear-gradient(160deg, #f0eaff 0%, #f8f7ff 100%)" }}
@@ -184,9 +162,7 @@ export default function Landing() {
           <h2 className="text-3xl sm:text-4xl font-black text-foreground mb-4 font-display">
             Ready to see your number?
           </h2>
-          <p className="text-muted-fg mb-7">
-            No account. No credit card. Just your AI tools and 2 minutes.
-          </p>
+          <p className="text-muted-fg mb-7">No account. No credit card. Just your AI tools and 2 minutes.</p>
           <Link
             href="/audit"
             className="inline-flex items-center gap-2 bg-primary text-white font-bold px-7 py-3 rounded-sm hover:bg-primary-dark transition-colors group font-display"
@@ -197,7 +173,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── Footer ── */}
       <footer className="border-t border-border py-6 px-5">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <Link href="/" className="flex items-center gap-2">

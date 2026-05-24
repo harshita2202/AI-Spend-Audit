@@ -4,43 +4,49 @@
 
 ```mermaid
 graph TD
-  User[Browser] --> Form[Spend Input Form]
-  Form --> Engine[Audit Engine - rule-based]
-  Engine --> Anthropic[Anthropic API - summary]
-  Engine --> Results[Results Page]
-  Anthropic --> Results
-  Results --> LeadCapture[Email capture modal]
-  LeadCapture --> Supabase[(Supabase DB)]
-  LeadCapture --> Resend[Resend - transactional email]
-  Results --> ShareURL[Unique public URL /audit/:id]
-  ShareURL --> Supabase
+  User[Browser] --> Landing[Landing Page /]
+  Landing --> Form[Audit Form /audit]
+  Form --> Engine[auditEngine.ts — rule-based logic]
+  Engine --> Save[saveAudit — Supabase]
+  Engine --> Results[Results Page /results/:id]
+  Save --> DB[(Supabase Postgres)]
+  Results --> Summary[generateSummary — Anthropic API]
+  Results --> Capture[Email Capture Modal]
+  Capture --> Leads[(leads table)]
+  Capture --> Email[Confirmation Email — Resend]
+  Results --> Share[Shareable URL /audit/:id]
+  Share --> DB
 ```
 
 ## Data flow
 
-1. User fills the spend form → stored in `localStorage` (no server call yet)
-2. On submit → `auditEngine.ts` runs locally, pure TypeScript, zero API calls
-3. After engine produces results → `POST /api/audits` saves audit to Supabase, 
-   returns a UUID
-4. Page navigates to `/results/:uuid`
-5. On results page → `POST /api/summary` calls Anthropic API with audit data, 
-   returns ~100-word paragraph. On failure → fallback template renders instead
-6. User submits email → `POST /api/leads` saves to `leads` table, 
-   triggers Resend confirmation email
-7. Share URL is `/audit/:uuid` — reads from Supabase, PII fields excluded
+1. User fills spend form → saved in localStorage (no server call)
+2. Step 3 submit → auditEngine.ts runs locally — pure TypeScript, zero API calls
+3. Result passed to saveAudit() → POST to Supabase audits table → returns UUID
+4. UUID stored in sessionStorage + navigate to /results/:uuid
+5. Results page reads sessionStorage (instant) or fetches Supabase (shared link)
+6. generateSummary() calls Anthropic API with audit data → 100-word paragraph
+7. On API failure → fallback template renders silently, no error shown to user
+8. Email capture → saveLead() → Supabase leads table → confirmation email via Resend
+9. Share URL is /audit/:uuid — reads from Supabase, PII fields never selected
 
 ## Stack choices
 
-- **React + TypeScript + Vite** — Fast iteration, strong types for audit logic
-- **Tailwind + shadcn/ui** — Consistent design system without custom CSS overhead
-- **Supabase** — Postgres + auth + realtime in one free-tier service
-- **Resend** — Simple transactional email, 100 emails/day free tier
-- **Vercel** — Zero-config deploys, edge functions for API routes
+- React + TypeScript + Vite — Fast iteration, strong types for audit logic, no SSR needed
+- Tailwind + shadcn/ui — Consistent design system without custom CSS overhead
+- Supabase — Postgres + free tier generous enough for this use case
+- Anthropic API — Used only for the narrative summary, not for audit math
+- Vercel — Zero-config deploys, edge functions available for future server-side needs
 
-## Scaling to 10k audits/day
+## Why not Next.js
 
-- Move audit engine to a serverless edge function (currently client-side)
-- Add Redis caching for Anthropic summaries — same tool stack = same summary
-- Rate limit by IP at the edge, not application layer
-- Add a queue (Upstash QStash) for email sending to avoid Resend rate limits
-- Supabase scales to this load on the Pro plan ($25/mo)
+No SSR required for this SPA. Vite cold starts in under 300ms vs Next.js 2-3s during development. For a 7-day build, iteration speed matters more than SSR capabilities.
+
+## Scaling to 10,000 audits per day
+
+- Move audit engine to Vercel Edge Functions (currently client-side — fine for MVP)
+- Add Redis caching for Anthropic summaries — same tool stack produces identical summaries
+- Rate limit at edge via Vercel middleware, not application layer
+- Add Upstash QStash queue for email sending to avoid Resend rate limits
+- Supabase Pro plan ($25/mo) handles this load comfortably
+- Add a CDN layer for the shared audit pages — they are read-heavy and cacheable
