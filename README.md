@@ -4,21 +4,13 @@ StackLens helps startup founders and engineering managers find out
 if they're overpaying for AI tools. Input your stack, get an instant 
 breakdown of savings opportunities, and share your audit via a unique URL.
 
-**Live demo:** https://your-deployed-url.vercel.app
-
----
-
-## Screenshots
-
-[Insert 3 screenshots here — landing page, form, results page]
-Or: [30-second Loom walkthrough](https://loom.com/your-link)
-
+**Live demo:** https://ai-spend-audit-iota-two.vercel.app/
 ---
 
 ## Quick start
 
 ```bash
-git clone https://github.com/yourusername/stacklens
+git clone https://github.com/harshita2202/AI-Spend-Audit.git
 cd frontend
 pnpm install
 pnpm dev
@@ -29,7 +21,6 @@ To deploy:
 pnpm run build
 
 ```
-
 ---
 
 ## Decisions
