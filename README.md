@@ -19,14 +19,14 @@ Or: [30-second Loom walkthrough](https://loom.com/your-link)
 
 ```bash
 git clone https://github.com/yourusername/stacklens
-cd stacklens
-npm install
-npm run dev
+cd frontend
+pnpm install
+pnpm dev
 ```
 
 To deploy:
 ```bash
-npm run build
+pnpm run build
 
 ```
 

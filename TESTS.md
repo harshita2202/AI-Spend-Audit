@@ -1,41 +1,20 @@
 # Tests
 
-All tests use Vitest. Run with: `npm run test`
+Run all tests: `npm test`
 
-## Audit engine tests
+## Audit engine tests (src/__tests__/auditEngine.test.ts)
 
-| File | What it covers | Command |
-|------|---------------|---------|
-| `src/__tests__/auditEngine.test.ts` | Core savings calculation | `npm test` |
+| # | Test | What it covers |
+|---|------|---------------|
+| 1 | Cursor seat reduction | Oversized Business team gets downsizing recommendation |
+| 2 | Copilot Individual recommendation | Small Business team should switch to cheaper plan |
+| 3 | Claude Max to Pro | Non-research teams do not need Max plan |
+| 4 | ChatGPT excess seats | Seats above team size triggers reduction |
+| 5 | Zero savings case | Optimal setup returns 0 savings, no Credex CTA |
+| 6 | Credex CTA threshold | Savings above $500/mo triggers showCredexCTA true |
+| 7 | Disabled tool handling | Disabled tools excluded, no NaN in totals |
+| 8 | Windsurf Teams vs Pro | Small team on Teams plan recommended to downgrade |
+| 9 | Annual savings calculation | Annual is exactly 12x monthly with no rounding error |
+| 10 | Multi-tool savings sum | Total savings equals sum of all individual tool savings |
 
-### Test list
-
-1. **`calculates correct savings for oversized Cursor team`**  
-   Input: Cursor Business × 10 seats at $400/mo, team of 3 developers.  
-   Expected: recommends downgrade to Pro × 3, savings = $270/mo.
-
-2. **`returns zero savings for already-optimal plan`**  
-   Input: GitHub Copilot Individual × 1 seat at $10/mo, solo developer.  
-   Expected: `savingsAmount = 0`, `recommendation = "optimal"`.
-
-3. **`handles disabled tools gracefully`**  
-   Input: Tool with `enabled: false`.  
-   Expected: tool excluded from audit, no NaN in totals.
-
-4. **`calculates annual savings correctly`**  
-   Input: monthly savings of $150.  
-   Expected: annual savings = $1800 exactly.
-
-5. **`surfaces Credex CTA only above $500/mo threshold`**  
-   Input: audit with $600/mo savings.  
-   Expected: `showCredexCTA = true`.  
-   Input: audit with $400/mo savings.  
-   Expected: `showCredexCTA = false`.
-
-6. **`seat count validation rejects negative seats`**  
-   Input: seats = -1.  
-   Expected: Zod validation error, form does not submit.
-
-7. **`audit total matches sum of per-tool savings`**  
-   Input: 3 tools with individual savings of $50, $80, $120.  
-   Expected: total savings = $250.
+All 10 tests pass. Run with: `npm test`
