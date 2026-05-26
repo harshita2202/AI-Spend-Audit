@@ -7,21 +7,6 @@
 "Free 2-minute audit for founders and engineering managers. 
 See exactly where to cut, switch, or downgrade — no signup required."
 
-## Primary CTA
-"Run my free audit →"
-
-## Social proof block
-*(mocked — would replace with real data after launch)*
-
-> "Found $340/mo in wasted Cursor seats in 5 minutes."  
-> — **A.K., CTO at a Series A fintech** *(mocked)*
-
-> "I knew we were overpaying. Didn't know it was this much."  
-> — **R.M., Engineering Manager, 12-person SaaS** *(mocked)*
-
-Stat bar: **"Founders using StackLens save $180/month on average"** 
-*(mocked — replace with real avg after 50+ audits)*
-
 ## FAQ
 
 **Q: Is this really free?**  
